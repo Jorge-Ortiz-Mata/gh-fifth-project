@@ -46,6 +46,9 @@ jobs:
     steps:
       - env:
           MESSAGE: ${{ needs.build.outputs.output1 }}
+      - name: Print Variables
+        run: echo "$MESSAGE"
+
       - name: Get Artifcats
         uses: actions/download-artifact@v3
         with:
@@ -53,10 +56,6 @@ jobs:
 
       - name: Seeing artifacts
         run: ls
-
-      - name: Print Variables
-        run: echo "$MESSAGE"
-
 
       - name: Deploy
         run: echo "Deploying..."
