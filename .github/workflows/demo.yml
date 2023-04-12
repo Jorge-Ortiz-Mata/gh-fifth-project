@@ -44,10 +44,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - env:
-          MESSAGE: ${{ needs.build.outputs.output1 }}
-        run: echo "$MESSAGE"
-
       - name: Get Artifcats
         uses: actions/download-artifact@v3
         with:
@@ -55,6 +51,9 @@ jobs:
 
       - name: Seeing artifacts
         run: ls
+
+      - name: Showing variables
+        run: echo ${{ needs.build.outputs.output1 }}
 
       - name: Deploy
         run: echo "Deploying..."
