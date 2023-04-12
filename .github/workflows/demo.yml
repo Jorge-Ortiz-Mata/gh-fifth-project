@@ -46,7 +46,6 @@ jobs:
     steps:
       - env:
           MESSAGE: ${{ needs.build.outputs.output1 }}
-      - name: Print Variables
         run: echo "$MESSAGE"
 
       - name: Get Artifcats
