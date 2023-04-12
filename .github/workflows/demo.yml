@@ -18,6 +18,8 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      output1:  ${{ steps.publish.outputs.value-key }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -28,15 +30,22 @@ jobs:
       - name: Build website
         run: npm run build
 
+      - name: Publish JS filename
+        id: publish
+        run: echo "value-key=hello_world" >> $GITHUB_OUTPUT
+
       - name: Store artifact
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact-files # <--- Name
           path: dist
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - env:
+          MESSAGE: ${{ needs.build.outputs.output1 }}
       - name: Get Artifcats
         uses: actions/download-artifact@v3
         with:
@@ -44,6 +53,10 @@ jobs:
 
       - name: Seeing artifacts
         run: ls
+
+      - name: Print Variables
+        run: echo "$MESSAGE"
+
 
       - name: Deploy
         run: echo "Deploying..."
